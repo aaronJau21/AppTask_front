@@ -1,23 +1,41 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { ProjectForm } from "../../components/projects/ProjectForm";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-export type Inputs = {
-  projectName: string;
-  clientName: string;
-  description: string;
-};
+import { ProjectForm } from "../../components/projects/ProjectForm";
+import { ProjectFOrmData } from "../../types";
+import { ProjectService } from "../../../domain/services/project.service";
+import useProjectStore from "../../../domain/store/projects/project.store";
+import { useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 export const CreateProject = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const navigate = useNavigate();
+  // Store
+  const setRegister = useProjectStore((state) => state.setRegister);
 
-  const handleForm = (data: Inputs) => {
-    console.log(data);
-  };
+  const { register, handleSubmit } = useForm<ProjectFOrmData>({
+    defaultValues: {
+      projectName: "",
+      clientName: "",
+      description: "",
+    },
+  });
+
+  const {mutate} = useMutation({
+    mutationFn: ProjectService.createProject,
+    onError: () => toast.error('No se creo el Projecto'),
+    onSuccess: () => {
+      toast.success("Project Created");
+      navigate("/");
+    },
+  });
+
+  useEffect(() => {
+    setRegister(register);
+  }, []);
+
+  const handleForm = (data: ProjectFOrmData) => mutate(data)
 
   return (
     <>
@@ -40,7 +58,7 @@ export const CreateProject = () => {
           onSubmit={handleSubmit(handleForm)}
           noValidate
         >
-          <ProjectForm register={register} errors={errors} />
+          <ProjectForm />
 
           <input
             type="submit"

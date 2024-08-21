@@ -1,13 +1,8 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { ErrorMessage } from "../ErrorMessage";
-import { Inputs } from "../../Page/projects/CreateProject";
+import useProjectStore from "../../../domain/store/projects/project.store";
 
-type ProjectFormProps = {
-  register: UseFormRegister<Inputs>;
-  errors: FieldErrors<Inputs>;
-};
+export const ProjectForm = () => {
+  const register = useProjectStore((state) => state.register);
 
-export const ProjectForm = ({ register, errors }: ProjectFormProps) => {
   return (
     <>
       <div className="mb-5 space-y-3">
@@ -19,14 +14,10 @@ export const ProjectForm = ({ register, errors }: ProjectFormProps) => {
           className="w-full p-3  border border-gray-200"
           type="text"
           placeholder="Nombre del Proyecto"
-          {...register("projectName", {
+          {...register?.("projectName", {
             required: "El Titulo del Proyecto es obligatorio",
           })}
         />
-
-        {errors.projectName && (
-          <ErrorMessage>{errors.projectName.message}</ErrorMessage>
-        )}
       </div>
 
       <div className="mb-5 space-y-3">
@@ -38,14 +29,10 @@ export const ProjectForm = ({ register, errors }: ProjectFormProps) => {
           className="w-full p-3  border border-gray-200"
           type="text"
           placeholder="Nombre del Cliente"
-          {...register("clientName", {
+          {...register?.("clientName", {
             required: "El Nombre del Cliente es obligatorio",
           })}
         />
-
-        {errors.clientName && (
-          <ErrorMessage>{errors.clientName.message}</ErrorMessage>
-        )}
       </div>
 
       <div className="mb-5 space-y-3">
@@ -56,14 +43,10 @@ export const ProjectForm = ({ register, errors }: ProjectFormProps) => {
           id="description"
           className="w-full p-3  border border-gray-200"
           placeholder="Descripción del Proyecto"
-          {...register("description", {
+          {...register?.("description", {
             required: "Una descripción del proyecto es obligatoria",
           })}
         />
-
-        {errors.description && (
-          <ErrorMessage>{errors.description.message}</ErrorMessage>
-        )}
       </div>
     </>
   );
