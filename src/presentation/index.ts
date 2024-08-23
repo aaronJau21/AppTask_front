@@ -10,3 +10,4 @@ export * from './layouts/AppLayout';
 // Pages
 export * from './Page/Dashboard';
 export * from './Page/projects/CreateProject';
+export * from './Page/projects/EditProjectView';
