@@ -22,6 +22,5 @@ export const EditProjectView = () => {
 
   if (isLoading) return "Cargando...";
   if (isError) return <Navigate to="/404" />;
-
   if (data) return <EditProjectForm />;
 };
